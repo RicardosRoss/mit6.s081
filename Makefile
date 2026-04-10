@@ -91,7 +91,7 @@ LD = $(TOOLPREFIX)ld
 OBJCOPY = $(TOOLPREFIX)objcopy
 OBJDUMP = $(TOOLPREFIX)objdump
 
-CFLAGS = -Wall -Werror -O -fno-omit-frame-pointer -ggdb
+CFLAGS = -Wall -Werror -Wno-infinite-recursion -O -fno-omit-frame-pointer -ggdb
 
 ifdef LAB
 LABUPPER = $(shell echo $(LAB) | tr a-z A-Z)
@@ -210,12 +210,18 @@ endif
 
 ifeq ($(LAB),lazy)
 UPROGS += \
-	$U/_lazytests
+		$U/_lazytests
+endif
+
+ifeq ($(LAB),syscall)
+UPROGS += \
+		$U/_trace\
+		$U/_sysinfotest
 endif
 
 ifeq ($(LAB),cow)
 UPROGS += \
-	$U/_cowtest
+		$U/_cowtest
 endif
 
 ifeq ($(LAB),thread)
